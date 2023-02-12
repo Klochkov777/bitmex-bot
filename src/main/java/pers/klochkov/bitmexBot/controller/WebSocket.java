@@ -18,6 +18,8 @@ public class WebSocket extends Endpoint {
         this.output = stringBuffer;
     }
 
+
+
     @Override
     public void onOpen(Session session, EndpointConfig endpointConfig){
         this.session = session;
@@ -40,5 +42,20 @@ public class WebSocket extends Endpoint {
 
     public void sendMessage(String message) {
         session.getAsyncRemote().sendText(message);
+    }
+
+
+    public void close() throws IOException {
+        CloseReason cr = new CloseReason(
+                CloseReason.CloseCodes.NORMAL_CLOSURE, "OK");
+        onClose(this.session, cr);
+        System.out.println("there are going to close session");
+        session.close();
+        System.out.println("session is closed");
+
+    }
+
+    public Session getSession() {
+        return this.session;
     }
 }
